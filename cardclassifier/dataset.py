@@ -31,7 +31,6 @@ def main(
 def process_data_to_csv(data_dir, output_csv):
     # List to hold the data
     data = []
-
     # Traverse the directory
     class_names = os.listdir(data_dir)
     logger.info(f"Found {len(class_names)} classes in the dataset.")
