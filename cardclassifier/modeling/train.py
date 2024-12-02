@@ -20,16 +20,28 @@ def main(
 ):
     # ---- REPLACE THIS WITH YOUR OWN CODE ----
     logger.info("Training some model...")
-    df = pd.read_csv(label_features_path,nrows=1000)
-    logger.info(f"Loaded {len(df)} rows from {label_features_path}.")
 
-    training_data = []
-    for row in tqdm(df.iterrows(), total=1000, desc="Training model"):
-        training_data.append(row)
+    training_data = training_data_generator(label_features_path)
+
+    
+    
+
     logger.success("Modeling training complete.")
-    print(training_data)
     # -----------------------------------------
 
+def training_data_generator(label_features_path):
+    df = pd.read_csv(label_features_path, nrows=1000)
+    
+    # Reorder columns to place 'class_name' as the second column
+    columns = ['image_data', 'class_name'] + [col for col in df.columns if col not in ['image_data', 'class_name']]
+    df = df[columns]
+
+    training_data = []
+
+    for row in tqdm(df.iterrows(), total=len(df), desc="Training model"):
+        training_data.append(row)
+        print(row)
+    return training_data
 
 if __name__ == "__main__":
     app()
